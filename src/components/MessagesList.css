@@ -1,0 +1,7 @@
+.list .item {
+    background: lightblue;
+}
+
+.list .item.own-message {
+    background: lightgreen;
+}
