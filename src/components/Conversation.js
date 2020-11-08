@@ -1,9 +1,12 @@
-import React from 'react';
+import './Conversation.css';
+import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import MessagesList from './MessagesList';
 import MessageInput from './MessageInput';
 
-const Conversation = ({ isSignedIn, selectedUser }) => {
+const Conversation = ({ isSignedIn, messagesCount, selectedUser }) => {
+    const listRef = useRef(null);
+
     if (isSignedIn === null) {
         return null;
     }
@@ -18,10 +21,10 @@ const Conversation = ({ isSignedIn, selectedUser }) => {
 
     return (
         <div>
-            <div className="ui segment">
-                <MessagesList />
+            <div ref={listRef}className="ui segment chat-messages">
+                <MessagesList scroll={listRef} />
             </div>
-            <div className="ui segment">
+            <div className="ui segment chat-input">
                 <MessageInput />
             </div>
         </div>
@@ -31,7 +34,8 @@ const Conversation = ({ isSignedIn, selectedUser }) => {
 const mapStateToProps = state => {
     return { 
         isSignedIn: state.auth.isSignedIn,
-        selectedUser: state.chats.selectedUser
+        selectedUser: state.chats.selectedUser,
+        messagesCount: state.messages.length
      };
 };
 

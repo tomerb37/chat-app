@@ -3,8 +3,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchMessages } from '../actions';
 
-const MessagesList = ({ messages, userId, selectedChatUserId, fetchMessages }) => {
-    // eslint-disable-next-line
+const MessagesList = ({ messages, userId, selectedChatUserId, fetchMessages, scroll }) => {
     useEffect(() => {
         fetchMessages();
         const intervalHandler = setInterval(() => fetchMessages(), 2000);
@@ -14,6 +13,10 @@ const MessagesList = ({ messages, userId, selectedChatUserId, fetchMessages }) =
         };
     }, [selectedChatUserId]);
 
+    useEffect(() => {
+        scroll.current.scrollTop = scroll.current.scrollHeight;
+    }, [messages.length]);
+
     if (messages.length === 0) {
         return <div className="ui relaxed divided list">No messages.</div>;
     }
@@ -21,11 +24,12 @@ const MessagesList = ({ messages, userId, selectedChatUserId, fetchMessages }) =
     const messagesList = messages.map(message => {
         const itemClasses = `item ${message.senderId === userId ? 'own-message' : ''}`;
         const contentClasses = `${message.senderId === userId ? 'right floated ' : ''} content`;
+        const creationDate = new Date(message.creationDate);
         return (
             <div key={message.id} className={itemClasses}>
                 <div className={contentClasses}>
                     <div className="header">{message.content}</div>
-                    <div className="description">{message.creationDate}</div>
+                    <div className="description">{creationDate.toLocaleString()}</div>
                 </div>
             </div>
         )
