@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import MessagesList from './MessagesList';
 import MessageInput from './MessageInput';
 
-const Conversation = ({ isSignedIn, messagesCount, selectedUser }) => {
+const Conversation = ({ isSignedIn, selectedUser }) => {
     const listRef = useRef(null);
 
     if (isSignedIn === null) {
@@ -16,15 +16,15 @@ const Conversation = ({ isSignedIn, messagesCount, selectedUser }) => {
     }
 
     if (selectedUser === null) {
-        return <div>Please select a chat.</div>;
+        return <div className="icon-div"><i className="massive comment icon"></i></div>;
     }
 
     return (
         <div>
-            <div ref={listRef}className="ui segment chat-messages">
+            <div ref={listRef} className="ui segment chat-messages">
                 <MessagesList scroll={listRef} />
             </div>
-            <div className="ui segment chat-input">
+            <div className="ui segment">
                 <MessageInput />
             </div>
         </div>

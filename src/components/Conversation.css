@@ -1,4 +1,8 @@
 .chat-messages {
-    height: 60vh;
+    height: 65vh;
     overflow: auto;
+}
+
+.icon-div {
+    text-align: center;
 }

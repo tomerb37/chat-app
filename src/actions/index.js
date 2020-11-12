@@ -22,16 +22,20 @@ export const fetchMessages = () => async (dispatch, getState) => {
 };
 
 export const createMessage = messageContent => async (dispatch, getState) => {
-    const userId = getState().auth.userId;
     const receiverId = getState().chats.selectedUser;
-
-    const message = {
-        senderId: userId,
+    const access_token = getState().auth.access_token;
+    
+    const message = { 
         receiverId: receiverId,
         content: messageContent
     };
 
-    const response = await chat.post('/messages', message);
+    const response = await chat.post('/messages', message, {
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+            'Content-Type': 'application/json'
+        }
+    });
 
     dispatch({ type: CREATE_MESSAGE, payload: response.data });
 };
@@ -41,9 +45,11 @@ export const changeAuth = isSignedIn => async dispatch => {
         const auth = window.gapi.auth2.getAuthInstance();
         const userId = auth.currentUser.get().getId();
         const nickname = auth.currentUser.get().getBasicProfile().getName();
-        const response = await chat.post('/users', {userId, nickname});
+        const response = await chat.post('/signin', {userId, nickname});
+        
+        const access_token = response.data.access_token;
 
-        dispatch({ type: SIGN_IN, payload: response.data });
+        dispatch({ type: SIGN_IN, payload: { userId, nickname, access_token } });
     } else {
         dispatch({ type: SIGN_OUT });
     }

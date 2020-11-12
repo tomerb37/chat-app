@@ -1,0 +1,8 @@
+.chats-list {
+    height: 80vh;
+    overflow: auto;
+}
+
+.conversation {
+    height: 80vh;
+}

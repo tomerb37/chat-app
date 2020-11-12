@@ -1,3 +1,4 @@
+import './App.css';
 import React from 'react';
 import { connect } from 'react-redux';
 import Conversation from './Conversation';
@@ -6,11 +7,21 @@ import ChatsList from './ChatsList';
 
 const App = ({ isSignedIn }) => {
     const renderBody = () => {
+        if (isSignedIn === null) {
+            return (
+                <div className="ui centered grid">
+                    <div className="row">
+                    <i className="huge spinner loading icon"></i>
+                    </div>
+                </div>
+            );
+        }
+
         if (!isSignedIn) {
             return (
                 <div className="ui centered grid">
                     <div className="row">
-                        <i className="chat-icon circular massive comment outline icon"></i>
+                        <i className="circular massive comment outline icon"></i>
                     </div>
                 </div>
             );
@@ -20,12 +31,12 @@ const App = ({ isSignedIn }) => {
             <div className="ui grid">
                 <div className="ui row">
                     <div className="three wide column">
-                        <div className="ui segment">
+                        <div className="ui segment chats-list">
                             <ChatsList />
                         </div>
                     </div>
                     <div className="thirteen wide column">
-                        <div className="ui segment">
+                        <div className="ui segment conversation">
                             <Conversation />
                         </div>
                     </div>
